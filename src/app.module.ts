@@ -6,6 +6,7 @@ import { SettingsController } from './controllers/settings.controller';
 import { TrafficController } from './controllers/traffic.controller';
 import { Settings, SettingsSchema } from './data/settings.schema';
 import { Traffic, TrafficSchema } from './data/traffic.schema';
+import { MqttController } from './mqtt/mqtt.controller';
 import { SettingsService } from './services/settings.service';
 import { TrafficService } from './services/traffic.service';
 
@@ -26,18 +27,11 @@ import { TrafficService } from './services/traffic.service';
     ]),
     MongooseModule.forRoot(process.env.MONGODB_CONNECTION_STRING),
     MongooseModule.forFeature([
-      { name: Test.name, schema: TestSchema },
       { name: Traffic.name, schema: TrafficSchema },
       { name: Settings.name, schema: SettingsSchema },
     ]),
   ],
-  controllers: [
-    TrafficController,
-    SettingsController,
-  ],
-  providers: [
-    TrafficService,
-    SettingsService,
-  ],
+  controllers: [MqttController, TrafficController, SettingsController],
+  providers: [TrafficService, SettingsService],
 })
 export class AppModule {}
