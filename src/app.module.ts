@@ -9,9 +9,13 @@ import { Traffic, TrafficSchema } from './data/traffic.schema';
 import { MqttController } from './mqtt/mqtt.controller';
 import { SettingsService } from './services/settings.service';
 import { TrafficService } from './services/traffic.service';
+import { SocketModule } from './sockets/socket.module';
+import { TrafficGateway } from './sockets/traffic.gateway';
 
 @Module({
   imports: [
+    SocketModule,
+    TrafficGateway,
     ConfigModule.forRoot(),
     ClientsModule.register([
       {
