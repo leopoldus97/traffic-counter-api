@@ -4,6 +4,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Settings, SettingsSchema } from './data/settings.schema';
 import { Traffic, TrafficSchema } from './data/traffic.schema';
+import { SettingsService } from './services/settings.service';
+import { TrafficService } from './services/traffic.service';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { Traffic, TrafficSchema } from './data/traffic.schema';
   controllers: [
   ],
   providers: [
+    TrafficService,
+    SettingsService,
   ],
 })
 export class AppModule {}
