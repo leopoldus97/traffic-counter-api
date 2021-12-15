@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
+import { SettingsController } from './controllers/settings.controller';
+import { TrafficController } from './controllers/traffic.controller';
 import { Settings, SettingsSchema } from './data/settings.schema';
 import { Traffic, TrafficSchema } from './data/traffic.schema';
 import { SettingsService } from './services/settings.service';
@@ -30,6 +32,8 @@ import { TrafficService } from './services/traffic.service';
     ]),
   ],
   controllers: [
+    TrafficController,
+    SettingsController,
   ],
   providers: [
     TrafficService,
