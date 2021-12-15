@@ -11,7 +11,12 @@ class Location {
 }
 const LocationSchema = SchemaFactory.createForClass(Location);
 
-export type TrafficType = 'CAR' | 'PASSENGER' | 'BICYCLE' | 'MOTORBIKE';
+export enum TrafficType {
+  CAR = 'CAR',
+  PASSENGER = 'PASSENGER',
+  BICYCLE = 'BICYCLE',
+  MOTORBIKE = 'MOTORBIKE',
+}
 
 export type TrafficDocument = Traffic & Document;
 
