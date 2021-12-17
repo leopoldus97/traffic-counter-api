@@ -9,7 +9,6 @@ export class SettingsController {
   @Get(':pid')
   async get(@Param() params: any) {
     try {
-      return this.service.findLatestSettingForPidAsync(params.pid);
       return await this.service.findLatestSettingForPidAsync(params.pid);
     } catch (error) {
       return { error };
@@ -19,7 +18,6 @@ export class SettingsController {
   @Post()
   async post(@Body() settings: Settings) {
     try {
-      return this.service.createSettingsDataAsync(settings);
       return await this.service.createSettingsDataAsync(settings);
     } catch (error) {
       return { error };

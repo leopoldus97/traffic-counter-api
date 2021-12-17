@@ -9,7 +9,7 @@ export class TrafficController {
   @Get(':type')
   async get(@Param() params: any) {
     try {
-      return this.service.findAllForTypeAsync(params.type);
+      return await this.service.findAllForTypeAsync(params.type);
     } catch (error) {
       return { error };
     }
@@ -18,7 +18,7 @@ export class TrafficController {
   @Post()
   async post(@Body() traffic: Traffic) {
     try {
-      return this.service.createTrafficDataAsync(traffic);
+      return await this.service.createTrafficDataAsync(traffic);
     } catch (error) {
       return { error };
     }
