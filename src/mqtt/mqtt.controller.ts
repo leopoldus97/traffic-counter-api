@@ -37,5 +37,4 @@ export class MqttController {
     await this.settingsService.initializeSettingsAsync(pid);
     await this.settingsService.initializeSettingsAsync(device.pid);
   }
-  }
 }
