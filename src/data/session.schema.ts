@@ -5,28 +5,28 @@ export type SessionDocument = Session & Document;
 
 @Schema()
 export class Session {
-  _id?: MongooseSchema.Types.ObjectId;
+    _id?: MongooseSchema.Types.ObjectId;
 
-  @Prop({ unique: true, type: String })
-  token: string;
+    @Prop({ unique: true, type: String })
+    token: string;
 
-  @Prop()
-  userId: string;
+    @Prop()
+    userId: string;
 
-  @Prop()
-  initialIpAddress: string;
+    @Prop()
+    initialIpAddress: string;
 
-  @Prop({ type: Date, default: new Date() })
-  startDate: Date;
+    @Prop({ type: Date, default: new Date() })
+    startDate: Date;
 
-  @Prop({ type: Date, default: null })
-  expiryDate: Date;
+    @Prop({ type: Date, default: null })
+    expiryDate: Date;
 
-  @Prop({ type: Date, default: null })
-  lastRequestDate: Date;
+    @Prop({ type: Date, default: new Date() })
+    lastRequestDate: Date;
 
-  @Prop()
-  lifetime: number;
+    @Prop()
+    lifetime: number;
 }
 
 export const SessionSchema = SchemaFactory.createForClass(Session);
