@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Settings } from 'src/data/settings.schema';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { SettingsService } from 'src/services/settings.service';
 
+@UseGuards(AuthGuard)
 @Controller('settings')
 export class SettingsController {
   constructor(private readonly service: SettingsService) {}

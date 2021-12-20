@@ -22,7 +22,7 @@ export class TrafficGateway implements OnGatewayInit {
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
-  handleConnection(client: Socket, ...args: any[]) {
+  handleConnection(client: Socket, ..._: any[]) {
     this.logger.log(`Client connected: ${client.id}`);
   }
 }

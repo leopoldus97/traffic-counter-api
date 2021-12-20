@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Traffic } from 'src/data/traffic.schema';
+import { AuthGuard } from "src/guards/auth.guard";
 import { TrafficService } from 'src/services/traffic.service';
 
+@UseGuards(AuthGuard)
 @Controller('traffic')
 export class TrafficController {
   constructor(private readonly service: TrafficService) {}
