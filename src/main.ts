@@ -4,12 +4,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  // Load app
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors({
-    origin: process.env.FRONTEND_URL,
-  });
-
+  // Configure additional features
+  app.enableCors({origin: process.env.FRONTEND_URL,});
   app.connectMicroservice({
     transport: Transport.MQTT,
     options: {
@@ -19,7 +18,8 @@ async function bootstrap() {
       password: process.env.MQTT_PASSWORD,
     },
   });
-
+  
+  // Generate Docs
   const config = new DocumentBuilder()
     .setTitle('Traffic-Counter')
     .setDescription('Traffic-Counter API')
@@ -29,6 +29,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  // Bootstrap server
   await app.startAllMicroservices();
   await app.listen(process.env.PORT || 3000);
 }

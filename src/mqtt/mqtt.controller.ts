@@ -20,13 +20,7 @@ export class MqttController {
 
   @MessagePattern('traffic/#')
   async traffic(@Payload() data: any, @Ctx() context: MqttContext) {
-    const traffic: Traffic = JSON.parse(data);
-    const trafficType: string = context
-      .getTopic()
-      .split('/')
-      .pop()
-      .toUpperCase();
-    traffic.trafficType = TrafficType[trafficType];
+    const traffic: Traffic = { ...JSON.parse(data), trafficType: context.getTopic().split('/').pop() };
     return await this.trafficService.createTrafficDataAsync(traffic);
   }
 

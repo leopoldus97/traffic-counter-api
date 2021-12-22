@@ -1,8 +1,8 @@
 import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
+    MiddlewareConsumer,
+    Module,
+    NestModule,
+    RequestMethod
 } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -20,15 +20,13 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import { MqttController } from './mqtt/mqtt.controller';
 import { AuthenticationService } from './services/authentication.service';
 import { DeviceService } from './services/device.service';
+import { EventService } from "./services/event.service";
 import { SettingsService } from './services/settings.service';
 import { TrafficService } from './services/traffic.service';
-import { SocketModule } from './sockets/socket.module';
-import { TrafficGateway } from './sockets/traffic.gateway';
+import { TrafficGateway } from "./sockets/traffic.gateway";
 
 @Module({
   imports: [
-    SocketModule,
-    TrafficGateway,
     ConfigModule.forRoot(),
     ClientsModule.register([
       {
@@ -63,6 +61,8 @@ import { TrafficGateway } from './sockets/traffic.gateway';
     SettingsService,
     DeviceService,
     AuthenticationService,
+    EventService,
+    TrafficGateway
   ],
 })
 export class AppModule implements NestModule {

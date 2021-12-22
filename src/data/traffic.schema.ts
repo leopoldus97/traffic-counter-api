@@ -11,12 +11,7 @@ class Location {
 }
 const LocationSchema = SchemaFactory.createForClass(Location);
 
-export enum TrafficType {
-  CAR = 'CAR',
-  PASSENGER = 'PASSENGER',
-  BICYCLE = 'BICYCLE',
-  MOTORBIKE = 'MOTORBIKE',
-}
+export type TrafficType = "car" | "pedestrian" | "bicycle" | "motorcycle";
 
 export type TrafficDocument = Traffic & Document;
 
@@ -30,7 +25,7 @@ export class Traffic {
   @Prop({ type: LocationSchema, required: false })
   location?: any;
 
-  @Prop({ required: true, default: 'CAR' })
+  @Prop({ required: true, default: "car" })
   trafficType: TrafficType;
 
   @Prop({ required: true, default: new Date() })
