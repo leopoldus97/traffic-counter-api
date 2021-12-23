@@ -2,10 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientMqtt } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Traffic, TrafficDocument, TrafficType } from 'src/data/traffic.schema';
-import { EventService } from "./event.service";
+import { concatMap, delay, of, range, repeat } from "rxjs";
+import { Traffic, TrafficDocument } from 'src/data/traffic.schema';
 import * as uuid from "uuid";
-import { concatMap, delay, of, range, repeat, timer } from "rxjs";
+import { EventService } from "./event.service";
 
 export type TrafficQuery = Partial<Pick<Traffic, "pid" | "trafficType" | "timestamp">>;
 
@@ -17,16 +17,18 @@ export class TrafficService {
         private readonly trafficModel: Model<TrafficDocument>,
         private readonly eventService: EventService,
     ) {
-        range(1, 10).pipe(
-            concatMap(i => of(i).pipe(delay(1000 + (Math.random() * 4000)))), //Randomize interval
-            repeat()
-        ).subscribe(async val =>
-            await this.createTrafficDataAsync({
-                trafficType: val % 3 === 0 ? "car" : val % 5 === 0 ? "pedestrian" : "bicycle",
-                pid: uuid.v4(),
-                timestamp: new Date()
-            })
-        );
+        if (process.env.GENERATE_TRAFFIC) {
+            range(1, 10).pipe(
+                concatMap(i => of(i).pipe(delay(1000 + (Math.random() * 4000)))), //Randomize interval
+                repeat()
+            ).subscribe(async val =>
+                await this.createTrafficDataAsync({
+                    trafficType: val % 3 === 0 ? "car" : val % 5 === 0 ? "pedestrian" : "bicycle",
+                    pid: uuid.v4(),
+                    timestamp: new Date()
+                })
+            );
+        }
     }
 
     async findTrafficData(query?: TrafficQuery): Promise<Traffic[]> {
@@ -43,7 +45,7 @@ export class TrafficService {
             end.setHours(24, 0, 0, 0);
             dbQuery.timestamp = {$gte: start,$lt: end};
         }
-        
+
         return await this.trafficModel.find(dbQuery).exec();
     }
 
