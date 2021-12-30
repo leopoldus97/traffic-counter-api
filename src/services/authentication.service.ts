@@ -33,17 +33,14 @@ export class AuthenticationService {
     ): Promise<SessionDocument> {
         let session: SessionDocument;
         try {
-            const hashedPassword = crypto
-                .createHash('sha256')
-                .update(password, 'utf8')
-                .digest('hex');
+            const hashedPassword = this.hashPassword(password);
             const user = await this.userModel.findOne({
                 username,
                 password: hashedPassword,
                 enabled: true,
             });
             if (!user) {
-                throw new AuthenticationError('Provided credentials did not match any user','USER_NOT_FOUND');
+                throw new AuthenticationError('Provided credentials did not match any user', 'USER_NOT_FOUND');
             }
             user.lastLoginDate = new Date();
             await user.save();
@@ -72,8 +69,20 @@ export class AuthenticationService {
             throw new AuthenticationError('Session not found', 'SESSION_NOT_FOUND');
         }
         if (session.expiryDate || new Date().getTime() - session.lastRequestDate.getTime() > session.lifetime) {
-            throw new AuthenticationError('Session has already expired','SESSION_EXPIRED');
+            throw new AuthenticationError('Session has already expired', 'SESSION_EXPIRED');
         }
         return session;
+    }
+
+    public async createUser(username: string, password: string): Promise<UserDocument> {
+        return await this.userModel.create({
+            username,
+            password: this.hashPassword(password),
+            enabled: true
+        });
+    }
+
+    private hashPassword(pass: string): string {
+        return crypto.createHash('sha256').update(pass, 'utf8').digest('hex');
     }
 }

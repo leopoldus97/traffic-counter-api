@@ -40,7 +40,7 @@ import { TrafficGateway } from "./sockets/traffic.gateway";
         },
       },
     ]),
-    MongooseModule.forRoot(process.env.MONGODB_CONNECTION_STRING),
+    MongooseModule.forRoot(process.env.MONGODB_CONNECTION_STRING + (process.env.SEED_DB_NAME ? process.env.SEED_DB_NAME : "")),
     MongooseModule.forFeature([
       { name: Traffic.name, schema: TrafficSchema },
       { name: Settings.name, schema: SettingsSchema },

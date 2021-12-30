@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, Res, UseGuards } from '@nestjs/common';
+import { Response } from "express";
 import { Traffic, TrafficType } from 'src/data/traffic.schema';
 import { AuthGuard } from "src/guards/auth.guard";
 import { TrafficService } from 'src/services/traffic.service';
@@ -18,11 +19,14 @@ export class TrafficController {
     }
 
     @Post()
-    async post(@Body() traffic: Traffic) {
+    async post(@Body() traffic: Traffic, @Res() res: Response) {
         try {
-            return await this.service.createTrafficDataAsync(traffic);
+            if (!traffic || !traffic.pid) {
+                return res.status(400).send({ error: "Empty body in request" });
+            }
+            return res.status(201).send(await this.service.createTrafficDataAsync(traffic));
         } catch (error) {
-            return { error };
+            res.status(500).send({ error });
         }
     }
 }
