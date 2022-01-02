@@ -7,6 +7,9 @@ jobs:
     env:
       PORT: 8080
       MONGODB_CONNECTION_STRING: mongodb://localhost:27017/
+      MQTT_URL: ${{ secrets.MQTT_URL }}
+      MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
+      MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
     strategy:
       matrix:
         node-version: [16.x]
