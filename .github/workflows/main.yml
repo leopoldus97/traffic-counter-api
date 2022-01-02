@@ -3,6 +3,7 @@ on: [push]
 
 jobs:
   cypress-run:
+    environment: mqtt
     runs-on: ubuntu-latest
     env:
       PORT: 8080
