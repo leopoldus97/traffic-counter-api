@@ -50,9 +50,14 @@ export class SettingsService {
     return settings;
   }
 
-  async executeThenEmitPartial(pid: string, partToUpdate: {}): Promise<Settings> {
+  async executeThenEmitPartial(pid: string, partToUpdate: any): Promise<Settings> {
     const settings: Settings = await this.patchValueToSettingsAsync(pid, partToUpdate);
-    this.client.emit('settings/' + pid, JSON.stringify(settings));
+    if (partToUpdate.state) {
+      const deviceState = partToUpdate.state === 'on' ? 'start' : 'stop';
+      this.client.emit(`${pid}/${deviceState}`, null);
+    } else {
+      this.client.emit('settings/' + pid, JSON.stringify(settings));
+    }
     return settings;
   }
 

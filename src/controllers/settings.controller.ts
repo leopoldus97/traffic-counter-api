@@ -44,7 +44,6 @@ export class SettingsController {
 
   @Put(':pid')
   async updatePartial(@Param() params: any, @Body() value: {}) {
-    console.log(typeof params);
     try {
       return await this.service.executeThenEmitPartial(params.pid, value);
     } catch (error) {
