@@ -8,10 +8,8 @@ import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthenticationController } from './controllers/authentication.controller';
-import { DeviceController } from './controllers/device.controller';
 import { SettingsController } from './controllers/settings.controller';
 import { TrafficController } from './controllers/traffic.controller';
-import { Device, DeviceSchema } from './data/device.schema';
 import { Session, SessionSchema } from './data/session.schema';
 import { Settings, SettingsSchema } from './data/settings.schema';
 import { Traffic, TrafficSchema } from './data/traffic.schema';
@@ -19,7 +17,6 @@ import { User, UserSchema } from './data/user.schema';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { MqttController } from './mqtt/mqtt.controller';
 import { AuthenticationService } from './services/authentication.service';
-import { DeviceService } from './services/device.service';
 import { EventService } from "./services/event.service";
 import { SettingsService } from './services/settings.service';
 import { TrafficService } from './services/traffic.service';
@@ -44,7 +41,6 @@ import { TrafficGateway } from "./sockets/traffic.gateway";
     MongooseModule.forFeature([
       { name: Traffic.name, schema: TrafficSchema },
       { name: Settings.name, schema: SettingsSchema },
-      { name: Device.name, schema: DeviceSchema },
       { name: Session.name, schema: SessionSchema },
       { name: User.name, schema: UserSchema },
     ]),
@@ -53,13 +49,11 @@ import { TrafficGateway } from "./sockets/traffic.gateway";
     MqttController,
     TrafficController,
     SettingsController,
-    DeviceController,
     AuthenticationController,
   ],
   providers: [
     TrafficService,
     SettingsService,
-    DeviceService,
     AuthenticationService,
     EventService,
     TrafficGateway
