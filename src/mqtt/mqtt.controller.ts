@@ -5,8 +5,7 @@ import {
   MqttContext,
   Payload,
 } from '@nestjs/microservices';
-import { Traffic, TrafficType } from 'src/data/traffic.schema';
-import { DeviceService } from 'src/services/device.service';
+import { Traffic } from 'src/data/traffic.schema';
 import { SettingsService } from 'src/services/settings.service';
 import { TrafficService } from 'src/services/traffic.service';
 
@@ -15,7 +14,6 @@ export class MqttController {
   constructor(
     private readonly trafficService: TrafficService,
     private readonly settingsService: SettingsService,
-    private readonly deviceService: DeviceService,
   ) {}
 
   @MessagePattern('traffic/#')
@@ -26,9 +24,7 @@ export class MqttController {
 
   @MessagePattern('init/#')
   async initializeSettings(@Ctx() context: MqttContext) {
-    const pid = context.getTopic();
-    const device = await this.deviceService.findOrCreateDeviceAsync(pid);
-    await this.settingsService.initializeSettingsAsync(pid);
-    await this.settingsService.initializeSettingsAsync(device.pid);
+    const pid = context.getTopic().split('/').pop();
+    return await this.settingsService.initializeSettingsAsync(pid);
   }
 }
